@@ -104,7 +104,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 **Nguyen Anh Thai** (Student ID: 24120224)
 - Course: Web Development
 - Year: Year 3
-- Institution: [Your University Name]
+- Institution: HCMUS
 
 ---
 
