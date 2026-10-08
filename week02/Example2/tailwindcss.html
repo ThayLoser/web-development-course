@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ví dụ 2 - TailwindCSS Responsive</title>
+    <!-- Include TailwindCSS from CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen flex flex-col font-sans m-0">
+
+    <!-- Header -->
+    <header class="bg-[#E6E6FA] px-5 py-4">
+        <!-- sm:flex-row applies for screens >= 640px in Tailwind by default, which is close to 576px. 
+             We can customize it if strictly needed, but sm is usually fine. -->
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+            <div class="flex flex-col items-start sm:flex-row sm:items-center">
+                <div class="font-bold text-lg mb-1 sm:mb-0">Brand</div>
+                <button class="bg-[#4da6ff] text-white rounded px-2 py-1 mb-3 sm:hidden text-xs">↓</button>
+            </div>
+            <nav class="flex flex-col sm:flex-row gap-2 sm:gap-4">
+                <a href="#" class="text-gray-800 hover:text-black text-sm">Home</a>
+                <a href="#" class="text-gray-800 hover:text-black text-sm">About</a>
+                <a href="#" class="text-gray-800 hover:text-black text-sm">Services</a>
+                <a href="#" class="text-gray-800 hover:text-black text-sm">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <!-- md:flex-row applies for screens >= 768px -->
+    <main class="flex flex-col md:flex-row flex-1">
+        
+        <!-- Sidebar -->
+        <aside class="bg-[#F5F5F5] p-4 md:p-6 flex flex-row md:flex-col gap-4 flex-wrap md:w-[200px]">
+            <a href="#" class="text-gray-800 hover:text-black text-sm">Section 1</a>
+            <a href="#" class="text-gray-800 hover:text-black text-sm">Section 2</a>
+            <a href="#" class="text-gray-800 hover:text-black text-sm">Section 3</a>
+        </aside>
+        
+        <!-- Content Area -->
+        <section class="bg-[#FAFAD2] p-6 md:p-10 flex-1">
+            <div class="flex justify-center mb-6">
+                <div class="bg-[#ccc] w-[200px] h-[200px] flex items-center justify-center text-gray-600 text-xl">
+                    200 &times; 200
+                </div>
+            </div>
+            
+            <h1 class="text-center text-2xl font-bold mb-4">Main Content Heading</h1>
+            <p class="text-sm text-gray-800 mb-6">This is a paragraph of text in the main content area. It provides information about the topic discussed in this section.</p>
+            
+            <h3 class="font-bold text-md mb-1">Section 1</h3>
+            <p class="text-sm text-gray-600 mb-4">Details about Section 1 go here.</p>
+            
+            <h3 class="font-bold text-md mb-1">Section 2</h3>
+            <p class="text-sm text-gray-600 mb-4">Details about Section 2 go here.</p>
+            
+            <h3 class="font-bold text-md mb-1">Section 3</h3>
+            <p class="text-sm text-gray-600 mb-4">Details about Section 3 go here.</p>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#E0E0E0] p-4 text-center text-sm text-gray-800">
+        Footer content goes here
+    </footer>
+
+</body>
+</html>

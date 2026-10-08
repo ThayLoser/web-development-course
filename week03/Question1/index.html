@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bàn Cờ Tướng</title>
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #2c3e50;
+        font-family: Arial, sans-serif;
+    }
+    .board-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+    .title {
+        color: white;
+        font-size: 24px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+    #game-container {
+        position: relative;
+        width: 511px;
+        height: 510px;
+        background-image: url('CoTuong_imgs/BanCo.jpg');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        border: 2px solid #34495e;
+        border-radius: 4px;
+    }
+    #grid {
+        position: absolute;
+        /* Điều chỉnh top, left, right, bottom để lưới khớp với các giao điểm trên hình nền */
+        top: 24px; 
+        left: 23px;
+        right: 22px;
+        bottom: 26px;
+        display: grid;
+        grid-template-columns: repeat(9, 1fr);
+        grid-template-rows: repeat(10, 1fr);
+    }
+    .cell {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
+    /* Hiệu ứng khi kéo quân cờ qua ô hợp lệ */
+    .cell.hovered::after {
+        content: '';
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background-color: rgba(46, 204, 113, 0.4);
+        border-radius: 50%;
+    }
+    .piece {
+        width: 37px;
+        height: 37px;
+        cursor: grab;
+        z-index: 10;
+        transition: transform 0.1s;
+    }
+    .piece:active {
+        cursor: grabbing;
+        transform: scale(1.1);
+    }
+    .black-piece {
+        /* Tạo màu đen cho quân cờ bằng CSS filter do chỉ có hình quân đỏ */
+        filter: grayscale(100%) contrast(1.5) brightness(0.6);
+    }
+</style>
+</head>
+<body>
+
+<div class="board-wrapper">
+    <div class="title">Bàn Cờ Tướng Drag & Drop</div>
+    <div id="game-container">
+        <div id="grid"></div>
+    </div>
+</div>
+
+<script>
+    const grid = document.getElementById('grid');
+    const cols = 9;
+    const rows = 10;
+    
+    // Tạo 90 ô (giao điểm)
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+            const cell = document.createElement('div');
+            cell.className = 'cell';
+            cell.dataset.row = r;
+            cell.dataset.col = c;
+            
+            // Xử lý sự kiện Drag & Drop cho từng ô
+            cell.addEventListener('dragover', dragOver);
+            cell.addEventListener('dragenter', dragEnter);
+            cell.addEventListener('dragleave', dragLeave);
+            cell.addEventListener('drop', dragDrop);
+            
+            grid.appendChild(cell);
+        }
+    }
+
+    // Sơ đồ khởi tạo bàn cờ
+    const initialBoard = [
+        ['D_Xe', 'D_Ma', 'D_Tuong', 'D_Si', 'D_Vua', 'D_Si', 'D_Tuong', 'D_Ma', 'D_Xe'], // Hàng 0 (Quân đen)
+        ['', '', '', '', '', '', '', '', ''],
+        ['', 'D_Phao', '', '', '', '', '', 'D_Phao', ''], 
+        ['D_Tot', '', 'D_Tot', '', 'D_Tot', '', 'D_Tot', '', 'D_Tot'], 
+        ['', '', '', '', '', '', '', '', ''], 
+        ['', '', '', '', '', '', '', '', ''], 
+        ['D_Tot', '', 'D_Tot', '', 'D_Tot', '', 'D_Tot', '', 'D_Tot'], // Hàng 6 (Quân đỏ)
+        ['', 'D_Phao', '', '', '', '', '', 'D_Phao', ''], 
+        ['', '', '', '', '', '', '', '', ''],
+        ['D_Xe', 'D_Ma', 'D_Tuong', 'D_Si', 'D_Vua', 'D_Si', 'D_Tuong', 'D_Ma', 'D_Xe']  // Hàng 9 (Quân đỏ)
+    ];
+
+    let draggedPiece = null;
+
+    function createPiece(name, row, col, isBlack) {
+        const piece = document.createElement('img');
+        piece.src = `CoTuong_imgs/${name}.gif`;
+        piece.className = 'piece';
+        if (isBlack) piece.classList.add('black-piece');
+        
+        piece.draggable = true;
+        piece.dataset.pieceName = name;
+        
+        piece.addEventListener('dragstart', dragStart);
+        piece.addEventListener('dragend', dragEnd);
+        
+        const index = row * cols + col;
+        grid.children[index].appendChild(piece);
+    }
+
+    // Khởi tạo quân cờ lên bàn
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+            if (initialBoard[r][c] !== '') {
+                const isBlack = r < 5; // Nửa trên bàn cờ coi như quân đen
+                createPiece(initialBoard[r][c], r, c, isBlack);
+            }
+        }
+    }
+
+    // Các hàm xử lý kéo thả
+    function dragStart(e) {
+        draggedPiece = this;
+        // Sử dụng setTimeout để ẩn phần tử gốc sau khi bắt đầu kéo
+        setTimeout(() => (this.style.visibility = 'hidden'), 0);
+    }
+
+    function dragEnd(e) {
+        draggedPiece.style.visibility = 'visible';
+        draggedPiece = null;
+    }
+
+    function dragOver(e) {
+        e.preventDefault(); // Cho phép thả
+    }
+
+    function dragEnter(e) {
+        e.preventDefault();
+        // Thêm class 'hovered' nếu đang vào một ô trống (không phải quân cờ)
+        if (e.target.classList.contains('cell')) {
+            e.target.classList.add('hovered');
+        } else if (e.target.parentElement.classList.contains('cell')) {
+            e.target.parentElement.classList.add('hovered');
+        }
+    }
+
+    function dragLeave(e) {
+        if (e.target.classList.contains('cell')) {
+            e.target.classList.remove('hovered');
+        } else if (e.target.parentElement.classList.contains('cell')) {
+            e.target.parentElement.classList.remove('hovered');
+        }
+    }
+
+    function dragDrop(e) {
+        e.preventDefault();
+        
+        let dropTarget = e.target;
+        
+        // Xóa highlight
+        if (dropTarget.classList.contains('cell')) {
+            dropTarget.classList.remove('hovered');
+        } else if (dropTarget.parentElement.classList.contains('cell')) {
+            dropTarget.parentElement.classList.remove('hovered');
+        }
+        
+        // Logic đặt quân vào ô hoặc ăn quân
+        if (dropTarget.classList.contains('cell')) {
+            dropTarget.appendChild(draggedPiece);
+        } else if (dropTarget.classList.contains('piece')) {
+            // Không ăn quân của chính mình nếu chỉ muốn thử nghiệm kéo thả (tùy chọn).
+            // Ở đây cho phép ăn quân:
+            const cell = dropTarget.parentElement;
+            cell.removeChild(dropTarget);
+            cell.appendChild(draggedPiece);
+        }
+    }
+</script>
+
+</body>
+</html>

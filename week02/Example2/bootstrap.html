@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ví dụ 2 - Bootstrap Responsive</title>
+    <!-- Include Bootstrap 5 from CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .bg-header { background-color: #E6E6FA; } /* Light purple */
+        .bg-sidebar { background-color: #F5F5F5; } /* Light grey */
+        .bg-content { background-color: #FAFAD2; } /* Light yellow */
+        .bg-footer { background-color: #E0E0E0; } /* Grey */
+        
+        .placeholder-img {
+            background-color: #ccc;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100 m-0">
+
+    <!-- Header -->
+    <div class="bg-header px-4 py-3">
+        <!-- flex-sm-row ensures it becomes horizontal on screens >= 576px -->
+        <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
+            <div class="d-flex flex-column align-items-start">
+                <div class="fw-bold fs-5 mb-1 mb-sm-0">Brand</div>
+                <!-- Hide toggle on screens >= 576px -->
+                <button class="btn btn-primary btn-sm d-sm-none p-0 px-2 py-1 mb-2" style="font-size: 10px;">↓</button>
+            </div>
+            <!-- Navigation links -->
+            <div class="d-flex flex-column flex-sm-row gap-2 gap-sm-4">
+                <a href="#" class="text-decoration-none text-dark" style="font-size: 0.9rem;">Home</a>
+                <a href="#" class="text-decoration-none text-dark" style="font-size: 0.9rem;">About</a>
+                <a href="#" class="text-decoration-none text-dark" style="font-size: 0.9rem;">Services</a>
+                <a href="#" class="text-decoration-none text-dark" style="font-size: 0.9rem;">Contact</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Area -->
+    <!-- flex-md-row ensures it becomes horizontal on screens >= 768px -->
+    <div class="container-fluid flex-grow-1 d-flex flex-column flex-md-row p-0">
+        
+        <!-- Sidebar -->
+        <!-- flex-row by default, flex-md-column for screens >= 768px -->
+        <div class="bg-sidebar p-3 p-md-4 d-flex flex-row flex-md-column flex-wrap gap-3" style="min-width: 200px;">
+            <a href="#" class="text-decoration-none text-dark" style="font-size: 0.9rem;">Section 1</a>
+            <a href="#" class="text-decoration-none text-dark" style="font-size: 0.9rem;">Section 2</a>
+            <a href="#" class="text-decoration-none text-dark" style="font-size: 0.9rem;">Section 3</a>
+        </div>
+        
+        <!-- Content Area -->
+        <div class="bg-content p-4 p-md-5 flex-grow-1">
+            <div class="d-flex justify-content-center mb-4">
+                <div class="placeholder-img">200 &times; 200</div>
+            </div>
+            
+            <h1 class="text-center mb-3">Main Content Heading</h1>
+            <p class="mb-4" style="font-size: 0.95rem;">This is a paragraph of text in the main content area. It provides information about the topic discussed in this section.</p>
+            
+            <h4 class="mb-1 fw-bold" style="font-size: 1.1rem;">Section 1</h4>
+            <p class="mb-3 text-muted" style="font-size: 0.9rem;">Details about Section 1 go here.</p>
+            
+            <h4 class="mb-1 fw-bold" style="font-size: 1.1rem;">Section 2</h4>
+            <p class="mb-3 text-muted" style="font-size: 0.9rem;">Details about Section 2 go here.</p>
+            
+            <h4 class="mb-1 fw-bold" style="font-size: 1.1rem;">Section 3</h4>
+            <p class="mb-3 text-muted" style="font-size: 0.9rem;">Details about Section 3 go here.</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-footer text-center p-3" style="font-size: 0.9rem;">
+        Footer content goes here
+    </footer>
+
+</body>
+</html>

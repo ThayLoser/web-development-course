@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bé Tập Tính</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 18px;
+        }
+
+        .container {
+            width: 600px;
+            margin: 50px auto;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .col-label {
+            width: 150px;
+        }
+
+        .col-input {
+            width: 250px;
+        }
+
+        .col-input input[type="text"] {
+            width: 200px;
+            padding: 5px;
+            font-size: 16px;
+        }
+
+        .col-actions {
+            display: flex;
+            gap: 20px;
+            width: 150px;
+        }
+
+        .col-actions label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        #calcBtn {
+            padding: 5px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #message {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Bé tập tính</h1>
+
+        <div class="row">
+            <div class="col-label">Số thứ nhất</div>
+            <div class="col-input">
+                <input type="text" id="num1" onblur="handleBlur(event, 'Số thứ nhất')">
+            </div>
+            <div class="col-actions">
+                <label><input type="radio" name="op" value="add"> Cộng</label>
+                <label><input type="radio" name="op" value="sub"> Trừ</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-label">Số thứ hai</div>
+            <div class="col-input">
+                <input type="text" id="num2" onblur="handleBlur(event, 'Số thứ hai')">
+            </div>
+            <div class="col-actions">
+                <label><input type="radio" name="op" value="mul"> Nhân</label>
+                <label><input type="radio" name="op" value="div"> Chia</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-label">Kết quả</div>
+            <div class="col-input">
+                <input type="text" id="result" readonly>
+            </div>
+            <div class="col-actions">
+                <button id="calcBtn" onclick="calculate()">Tính</button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-label">Thông báo</div>
+            <div class="col-input" style="width: auto;">
+                <span id="message"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function handleBlur(event, name) {
+            const val = event.target.value.trim();
+            const msgEl = document.getElementById('message');
+
+            // Nếu ô bị bỏ trống, tạm thời không báo lỗi blur (sẽ báo khi ấn Tính)
+            if (val === '') {
+                if (msgEl.innerText.includes(name)) {
+                    msgEl.innerText = '';
+                }
+                return;
+            }
+
+            // Kiểm tra xem giá trị có phải là số thực không
+            if (isNaN(val)) {
+                msgEl.innerText = `Giá trị nhập ở ô ${name} không phải là số`;
+            } else {
+                // Xóa thông báo lỗi nếu đã nhập số hợp lệ (chỉ xóa nếu lỗi đang hiển thị thuộc về ô này)
+                if (msgEl.innerText.includes(name)) {
+                    msgEl.innerText = '';
+                }
+            }
+        }
+
+        function calculate() {
+            const num1Str = document.getElementById('num1').value.trim();
+            const num2Str = document.getElementById('num2').value.trim();
+            const msgEl = document.getElementById('message');
+            const resultEl = document.getElementById('result');
+
+            // Xóa thông báo cũ
+            msgEl.innerText = '';
+            resultEl.value = '';
+
+            // Kiểm tra xem đã điền đủ và đúng định dạng 2 số chưa
+            if (num1Str === '' || isNaN(num1Str) || num2Str === '' || isNaN(num2Str)) {
+                msgEl.innerText = 'Chưa điền đủ hai số hợp lệ để thực hiện phép tính';
+                return;
+            }
+
+            // Kiểm tra xem đã chọn phép tính chưa
+            const op = document.querySelector('input[name="op"]:checked');
+            if (!op) {
+                msgEl.innerText = 'Bấm nút Tính mà chưa chọn phép tính';
+                return;
+            }
+
+            const n1 = parseFloat(num1Str);
+            const n2 = parseFloat(num2Str);
+            let res = 0;
+
+            switch (op.value) {
+                case 'add':
+                    res = n1 + n2;
+                    break;
+                case 'sub':
+                    res = n1 - n2;
+                    break;
+                case 'mul':
+                    res = n1 * n2;
+                    break;
+                case 'div':
+                    if (n2 === 0) {
+                        msgEl.innerText = 'Lỗi: Không thể chia cho 0';
+                        return;
+                    }
+                    res = n1 / n2;
+                    break;
+            }
+
+            resultEl.value = res;
+        }
+    </script>
+
+</body>
+
+</html>

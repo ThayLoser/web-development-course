@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Đăng ký và Đăng nhập</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f7f6;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+    }
+    .container {
+        background-color: #fff;
+        width: 550px;
+        padding: 30px 40px;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .tabs {
+        display: flex;
+        margin-bottom: 30px;
+        border-bottom: 2px solid #ddd;
+    }
+    .tab-btn {
+        flex: 1;
+        padding: 10px;
+        text-align: center;
+        background: none;
+        border: none;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        color: #555;
+    }
+    .tab-btn.active {
+        color: #007bff;
+        border-bottom: 2px solid #007bff;
+        margin-bottom: -2px;
+    }
+    .tab-content {
+        display: none;
+    }
+    .tab-content.active {
+        display: block;
+    }
+    .form-group {
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        column-gap: 20px;
+        margin-bottom: 25px;
+        position: relative;
+        align-items: center;
+    }
+    .form-group label {
+        text-align: right;
+        font-weight: bold;
+        color: #333;
+    }
+    .form-group input {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 15px;
+    }
+    .error-msg {
+        position: absolute;
+        top: 100%;
+        left: 140px; /* 120px label + 20px gap */
+        color: #e74c3c;
+        font-size: 13px;
+        margin-top: 4px;
+    }
+    .submit-btn {
+        width: 100%;
+        padding: 12px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+    .submit-btn:hover {
+        background-color: #0056b3;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="tabs">
+        <button type="button" class="tab-btn active" id="btn-register" onclick="showTab('register')">Đăng Ký</button>
+        <button type="button" class="tab-btn" id="btn-login" onclick="showTab('login')">Đăng Nhập</button>
+    </div>
+
+    <!-- Form Đăng ký -->
+    <div id="register" class="tab-content active">
+        <form id="registerForm" onsubmit="validateRegister(event)">
+            <div class="form-group">
+                <label for="fullname">Họ tên</label>
+                <input type="text" id="fullname" placeholder="Vd: Nguyen Van A">
+                <div class="error-msg" id="fullname-error"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Vd: nguyen_van_a">
+                <div class="error-msg" id="username-error"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" id="email" placeholder="Vd: email@example.com">
+                <div class="error-msg" id="email-error"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="phone">Số phone</label>
+                <input type="text" id="phone" placeholder="Vd: 0912345678">
+                <div class="error-msg" id="phone-error"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="dob">Ngày sinh</label>
+                <input type="text" id="dob" placeholder="dd/mm/yyyy">
+                <div class="error-msg" id="dob-error"></div>
+            </div>
+            
+            <button type="submit" class="submit-btn">Đăng Ký</button>
+        </form>
+    </div>
+
+    <!-- Form Đăng nhập -->
+    <div id="login" class="tab-content">
+        <form id="loginForm" onsubmit="validateLogin(event)">
+            <div class="form-group">
+                <label for="login-username">Username</label>
+                <input type="text" id="login-username" placeholder="Nhập username">
+                <div class="error-msg" id="login-username-error"></div>
+            </div>
+            <div class="form-group">
+                <label for="login-password">Mật khẩu</label>
+                <input type="password" id="login-password" placeholder="Nhập mật khẩu">
+                <div class="error-msg" id="login-password-error"></div>
+            </div>
+            <button type="submit" class="submit-btn">Đăng Nhập</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Xử lý chuyển tab
+    function showTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        
+        document.getElementById(tabId).classList.add('active');
+        document.getElementById('btn-' + tabId).classList.add('active');
+    }
+
+    function showError(id, message) {
+        document.getElementById(id + '-error').innerText = message;
+    }
+
+    function clearErrors() {
+        document.querySelectorAll('.error-msg').forEach(el => el.innerText = '');
+    }
+
+    // Validate Đăng Ký
+    function validateRegister(event) {
+        event.preventDefault();
+        clearErrors();
+        let isValid = true;
+
+        // 1. Validate Họ tên
+        const nameInput = document.getElementById('fullname').value.trim();
+        if (!nameInput) {
+            showError('fullname', 'Vui lòng nhập họ tên');
+            isValid = false;
+        } else {
+            const words = nameInput.split(/\s+/);
+            let nameValid = true;
+            for (let word of words) {
+                if (word.length > 0) {
+                    const firstChar = word[0];
+                    const restChars = word.substring(1);
+                    // Check viết hoa chữ đầu, viết thường các chữ sau
+                    if (firstChar !== firstChar.toUpperCase() || restChars !== restChars.toLowerCase()) {
+                        nameValid = false;
+                        break;
+                    }
+                }
+            }
+            if (!nameValid) {
+                showError('fullname', 'Mỗi từ trong họ tên phải viết hoa chữ cái đầu và viết thường phần còn lại');
+                isValid = false;
+            }
+        }
+
+        // 2. Validate Username
+        const usernameInput = document.getElementById('username').value.trim();
+        const usernameRegex = /^[A-Za-z_][A-Za-z0-9_]*$/;
+        if (!usernameInput) {
+            showError('username', 'Vui lòng nhập username');
+            isValid = false;
+        } else if (!usernameRegex.test(usernameInput)) {
+            showError('username', 'Username chỉ gồm ký tự, ký số, dấu _, không bắt đầu bằng số và không có khoảng trắng');
+            isValid = false;
+        }
+
+        // 3. Validate Email
+        const emailInput = document.getElementById('email').value.trim();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailInput) {
+            showError('email', 'Vui lòng nhập email');
+            isValid = false;
+        } else if (!emailRegex.test(emailInput)) {
+            showError('email', 'Email không đúng chuẩn (vd: name@domain.com)');
+            isValid = false;
+        }
+
+        // 4. Validate Số phone
+        const phoneInput = document.getElementById('phone').value.trim();
+        const phoneRegex = /^0\d{9}$/;
+        if (!phoneInput) {
+            showError('phone', 'Vui lòng nhập số điện thoại');
+            isValid = false;
+        } else if (!phoneRegex.test(phoneInput)) {
+            showError('phone', 'Số điện thoại phải gồm 10 số và bắt đầu bằng số 0');
+            isValid = false;
+        }
+
+        // 5. Validate Ngày sinh
+        const dobInput = document.getElementById('dob').value.trim();
+        const dobRegex = /^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+        if (!dobInput) {
+            showError('dob', 'Vui lòng nhập ngày sinh');
+            isValid = false;
+        } else if (!dobRegex.test(dobInput)) {
+            showError('dob', 'Ngày sinh phải theo định dạng dd/mm/yyyy');
+            isValid = false;
+        } else {
+            const parts = dobInput.split('/');
+            const day = parseInt(parts[0], 10);
+            const month = parseInt(parts[1], 10);
+            const year = parseInt(parts[2], 10);
+            
+            const dateObj = new Date(year, month - 1, day);
+            if (dateObj.getFullYear() !== year || dateObj.getMonth() !== month - 1 || dateObj.getDate() !== day) {
+                showError('dob', 'Ngày sinh không tồn tại (vd: 31/02/2000)');
+                isValid = false;
+            } else {
+                // Kiểm tra tuổi [15, 55]
+                const today = new Date();
+                let age = today.getFullYear() - year;
+                const m = today.getMonth() - (month - 1);
+                if (m < 0 || (m === 0 && today.getDate() < day)) {
+                    age--;
+                }
+                if (age < 15 || age > 55) {
+                    showError('dob', `Độ tuổi cho phép là [15, 55]. Tuổi của bạn là ${age}`);
+                    isValid = false;
+                }
+            }
+        }
+
+        if (isValid) {
+            alert('Đăng ký thành công!');
+        }
+    }
+
+    // Validate Đăng Nhập
+    function validateLogin(event) {
+        event.preventDefault();
+        clearErrors();
+        let isValid = true;
+        
+        const username = document.getElementById('login-username').value.trim();
+        const password = document.getElementById('login-password').value.trim();
+        
+        if (!username) {
+            showError('login-username', 'Vui lòng nhập username');
+            isValid = false;
+        }
+        if (!password) {
+            showError('login-password', 'Vui lòng nhập mật khẩu');
+            isValid = false;
+        }
+        
+        if (isValid) {
+            alert('Đăng nhập thành công!');
+        }
+    }
+</script>
+
+</body>
+</html>

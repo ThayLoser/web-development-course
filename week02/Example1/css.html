@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vanilla CSS Responsive</title>
+    <style>
+        body { 
+            margin: 0; 
+            font-family: sans-serif; 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh; 
+        }
+        .header { 
+            background-color: #6495ED; 
+            padding: 20px; 
+            font-weight: bold; 
+        }
+        .main-container { 
+            display: flex; 
+            flex-direction: column; 
+            flex: 1; 
+        }
+        .side { 
+            background-color: #F4D03F; 
+            padding: 20px; 
+            font-weight: bold; 
+        }
+        .content { 
+            background-color: #A9DFBF; 
+            padding: 20px; 
+            font-weight: bold; 
+            flex: 1; 
+        }
+        .footer { 
+            background-color: #E59866; 
+            padding: 20px; 
+            font-weight: bold; 
+        }
+
+        /* Media query for wider screens */
+        @media (min-width: 768px) {
+            .main-container { 
+                flex-direction: row; 
+            }
+            .side { 
+                width: 30%; 
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">HEADER</div>
+    <div class="main-container">
+        <div class="side">SIDE</div>
+        <div class="content">CONTENT</div>
+    </div>
+    <div class="footer">FOOTER</div>
+</body>
+</html>

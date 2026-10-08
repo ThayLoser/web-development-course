@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Thông tin nhóm bạn thân</title>
+    <style type="text/css">
+        body {
+            background-color: rgb(255, 203, 197);
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        .container {
+            width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        ul {
+            text-align: left;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Thông tin nhóm bạn của Nguyễn Anh Thái</h1>
+        <hr align="center" noshade width="70%">
+
+        <img src="images/group.jpg" usemap="#groupmap" width="700" height="250" alt="Ảnh nhóm bạn (minh họa)"
+            style="border-radius: 10px; object-fit: cover;">
+
+        <p>
+            Nhấp vào bên trái, giữa và bên phải của bức ảnh để truy cập trang thông tin của thành viên
+        </p>
+        <map name="groupmap">
+            <!-- Chia ảnh 900x300 thành 3 phần bằng nhau cho 3 người từ trái qua phải -->
+            <area shape="rect" coords="0,0,300,300" alt="Nguyễn Anh Thái" href="members/thai/index.html">
+            <area shape="rect" coords="300,0,600,300" alt="Raphinha" href="members/raphinha/index.html">
+            <area shape="rect" coords="600,0,900,300" alt="Lamine Yamal" href="members/yamal/index.html">
+        </map>
+
+        <ul>
+            <li>
+                <strong>Tên nhóm</strong>: <em>Nguyễn Anh Thái</em> <br />
+            </li>
+            <li>
+                <i>Danh sách thành viên</i>:
+                <ul type="circle">
+                    <li>Nguyễn Anh Thái (Giới tính: Nam)</li>
+                    <li>Raphinha (Giới tính: Nam)</li>
+                    <li>Lamine Yamal (Giới tính: Nam)</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</body>
+
+</html>

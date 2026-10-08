@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ví dụ 2 - Vanilla CSS Responsive</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background-color: #E6E6FA; /* Light purple */
+            padding: 15px 20px;
+        }
+        .header-inner {
+            display: flex;
+            flex-direction: column;
+        }
+        .brand-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .header-brand {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        .header-toggle {
+            background-color: #4da6ff;
+            color: white;
+            border: none;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            font-size: 0.8rem;
+        }
+        .header-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .header-nav a {
+            text-decoration: none;
+            color: #333;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Header for >= 576px */
+        @media (min-width: 576px) {
+            .header-inner {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .brand-container {
+                flex-direction: row;
+                align-items: center;
+            }
+            .header-brand {
+                margin-bottom: 0;
+            }
+            .header-toggle {
+                display: none; /* Hide toggle on larger screens */
+            }
+            .header-nav {
+                flex-direction: row;
+                gap: 15px;
+            }
+        }
+
+        /* Main Content */
+        main {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        /* Sidebar */
+        aside {
+            background-color: #F5F5F5; /* Light grey */
+            padding: 15px 20px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        aside a {
+            text-decoration: none;
+            color: #333;
+            font-size: 0.9rem;
+        }
+
+        /* Content Area */
+        section {
+            background-color: #FAFAD2; /* Light yellow */
+            padding: 30px 20px;
+            flex: 1;
+        }
+        .placeholder-img {
+            background-color: #ccc;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 1.2rem;
+            margin: 0 auto 20px auto;
+        }
+        section h1 {
+            text-align: center;
+            margin-top: 0;
+            font-size: 1.8rem;
+        }
+        section h3 {
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+        section p {
+            margin-top: 0;
+            font-size: 0.9rem;
+            color: #444;
+        }
+
+        /* Responsive Main Content for >= 768px */
+        @media (min-width: 768px) {
+            main {
+                flex-direction: row;
+            }
+            aside {
+                flex-direction: column;
+                width: 150px;
+            }
+        }
+
+        /* Footer */
+        footer {
+            background-color: #E0E0E0;
+            padding: 15px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="header-inner">
+            <div class="brand-container">
+                <div class="header-brand">Brand</div>
+                <button class="header-toggle">↓</button>
+            </div>
+            <nav class="header-nav">
+                <a href="#">Home</a>
+                <a href="#">About</a>
+                <a href="#">Services</a>
+                <a href="#">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Section -->
+    <main>
+        <aside>
+            <a href="#">Section 1</a>
+            <a href="#">Section 2</a>
+            <a href="#">Section 3</a>
+        </aside>
+        
+        <section>
+            <div class="placeholder-img">200 &times; 200</div>
+            <h1>Main Content Heading</h1>
+            <p>This is a paragraph of text in the main content area. It provides information about the topic discussed in this section.</p>
+            
+            <h3>Section 1</h3>
+            <p>Details about Section 1 go here.</p>
+            
+            <h3>Section 2</h3>
+            <p>Details about Section 2 go here.</p>
+            
+            <h3>Section 3</h3>
+            <p>Details about Section 3 go here.</p>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        Footer content goes here
+    </footer>
+
+</body>
+</html>

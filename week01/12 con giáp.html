@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>12 con giáp</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #fff;
+    padding: 20px;
+  }
+  h2 {
+    font-weight: normal;
+    margin-bottom: 16px;
+  }
+  .grid-container {
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    background: #fff;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 90px);
+    grid-template-rows: repeat(3, 90px);
+    gap: 8px;
+  }
+  .cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
+  .c1  { background: linear-gradient(135deg, #8fbf6a, #5a8f4a); }
+  .c2  { background: linear-gradient(135deg, #b5453a, #6e2a2a); }
+  .c3  { background: linear-gradient(135deg, #6fa8dc, #3d6fa3); }
+  .c4  { background: linear-gradient(135deg, #f0b96a, #d98a3a); }
+  .c5  { background: linear-gradient(135deg, #d9a8e0, #a86fc2); }
+  .c6  { background: linear-gradient(135deg, #a9e0c8, #4fae8f); }
+  .c7  { background: linear-gradient(135deg, #8fbf6a, #5a8f4a); }
+  .c8  { background: linear-gradient(135deg, #c2506a, #7a2a3a); }
+  .c9  { background: linear-gradient(135deg, #6fa8dc, #3d6fa3); }
+  .c10 { background: linear-gradient(135deg, #f0c96a, #d9973a); }
+  .c11 { background: linear-gradient(135deg, #c9a8e0, #9a6fc2); }
+  .c12 { background: linear-gradient(135deg, #f0c96a, #e0a05a); }
+</style>
+</head>
+<body>
+  <div class="grid-container">
+    <div class="grid">
+      <div class="cell c1">🐭</div>
+      <div class="cell c2">🐂</div>
+      <div class="cell c3">🐯</div>
+      <div class="cell c4">🐰</div>
+      <div class="cell c5">🐲</div>
+      <div class="cell c6">🐍</div>
+      <div class="cell c7">🐴</div>
+      <div class="cell c8">🐐</div>
+      <div class="cell c9">🐵</div>
+      <div class="cell c10">🐔</div>
+      <div class="cell c11">🐶</div>
+      <div class="cell c12">🐷</div>
+    </div>
+  </div>
+</body>
+</html>
