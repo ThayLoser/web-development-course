@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tuần 05 - ReactJS & TailwindCSS Assignments</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 text-white min-h-screen p-6 sm:p-12 flex flex-col justify-between">
+  
+  <div class="max-w-4xl mx-auto w-full">
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <div class="inline-flex items-center gap-2 px-3 py-1 bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 rounded-full text-xs font-semibold mb-4">
+        <span>🚀 Web Development Course • HCMUS</span>
+        <span>•</span>
+        <span>Week 05</span>
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-indigo-200 bg-clip-text text-transparent">
+        Bài Tập Tuần 05
+      </h1>
+      <p class="text-slate-400 mt-3 text-sm sm:text-base max-w-xl mx-auto">
+        Tập hợp 3 bài tập thực hành xây dựng với <b>ReactJS + TailwindCSS</b>. Tất cả đều hỗ trợ chạy trực tiếp và có cơ chế Fallback tự động khi thiếu hình ảnh.
+      </p>
+    </div>
+
+    <!-- Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      
+      <!-- Bài 1 -->
+      <a href="Exercise1/index.html" class="group relative bg-slate-800/80 hover:bg-slate-800 border border-slate-700/80 hover:border-indigo-500/50 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1.5 shadow-xl flex flex-col justify-between overflow-hidden">
+        <div class="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/20 transition-all"></div>
+        <div>
+          <div class="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-2xl mb-4">
+            🐲
+          </div>
+          <span class="text-[11px] font-bold text-emerald-400 uppercase tracking-wider">Bài Tập 1</span>
+          <h2 class="text-xl font-bold text-white mt-1 group-hover:text-emerald-300 transition-colors">
+            12 Con Giáp
+          </h2>
+          <p class="text-slate-400 text-xs sm:text-sm mt-2 line-clamp-3">
+            Bảng lưới 3x4 rực rỡ với dải màu gradient sinh động, thông tin từng con giáp và cơ chế Fallback vector SVG cao cấp.
+          </p>
+        </div>
+        <div class="mt-6 flex items-center justify-between text-xs font-semibold text-emerald-400 pt-4 border-t border-slate-700/60">
+          <span>Mở Bài Tập 1</span>
+          <span class="group-hover:translate-x-1 transition-transform">→</span>
+        </div>
+      </a>
+
+      <!-- Bài 2 -->
+      <a href="Exercise2/index.html" class="group relative bg-slate-800/80 hover:bg-slate-800 border border-slate-700/80 hover:border-indigo-500/50 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1.5 shadow-xl flex flex-col justify-between overflow-hidden">
+        <div class="absolute top-0 right-0 w-24 h-24 bg-red-500/10 rounded-full blur-2xl group-hover:bg-red-500/20 transition-all"></div>
+        <div>
+          <div class="w-12 h-12 rounded-xl bg-red-500/20 border border-red-500/30 flex items-center justify-center text-2xl mb-4">
+            ♟️
+          </div>
+          <span class="text-[11px] font-bold text-red-400 uppercase tracking-wider">Bài Tập 2</span>
+          <h2 class="text-xl font-bold text-white mt-1 group-hover:text-red-300 transition-colors">
+            Bàn Cờ Tướng
+          </h2>
+          <p class="text-slate-400 text-xs sm:text-sm mt-2 line-clamp-3">
+            Bàn cờ tướng tương tác kéo thả & click. Kiểm tra nghiêm ngặt luật đi đúng cho từng quân, cản mã, mắt tượng, ngòi pháo, cung tướng.
+          </p>
+        </div>
+        <div class="mt-6 flex items-center justify-between text-xs font-semibold text-red-400 pt-4 border-t border-slate-700/60">
+          <span>Mở Bài Tập 2</span>
+          <span class="group-hover:translate-x-1 transition-transform">→</span>
+        </div>
+      </a>
+
+      <!-- Bài 3 -->
+      <a href="Exercise3/index.html" class="group relative bg-slate-800/80 hover:bg-slate-800 border border-slate-700/80 hover:border-indigo-500/50 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1.5 shadow-xl flex flex-col justify-between overflow-hidden">
+        <div class="absolute top-0 right-0 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl group-hover:bg-blue-500/20 transition-all"></div>
+        <div>
+          <div class="w-12 h-12 rounded-xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-2xl mb-4">
+            🛍️
+          </div>
+          <span class="text-[11px] font-bold text-blue-400 uppercase tracking-wider">Bài Tập 3</span>
+          <h2 class="text-xl font-bold text-white mt-1 group-hover:text-blue-300 transition-colors">
+            Cửa Hàng Sản Phẩm
+          </h2>
+          <p class="text-slate-400 text-xs sm:text-sm mt-2 line-clamp-3">
+            Danh sách sản phẩm từ data.js, lọc danh mục từ Sidebar, xem chi tiết sản phẩm, nút Add to Cart và cơ chế Fallback danh mục.
+          </p>
+        </div>
+        <div class="mt-6 flex items-center justify-between text-xs font-semibold text-blue-400 pt-4 border-t border-slate-700/60">
+          <span>Mở Bài Tập 3</span>
+          <span class="group-hover:translate-x-1 transition-transform">→</span>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- Hướng dẫn chạy -->
+    <div class="mt-12 bg-slate-800/50 border border-slate-700/60 rounded-2xl p-6 text-xs sm:text-sm text-slate-300">
+      <h3 class="font-bold text-white text-base mb-2">📌 Cách chạy bài tập:</h3>
+      <ol class="list-decimal list-inside space-y-1.5 text-slate-400">
+        <li>Mở thư mục <code class="text-indigo-300 bg-slate-900 px-1.5 py-0.5 rounded">week05</code> bằng VS Code.</li>
+        <li>Bấm chuột phải vào file <code class="text-indigo-300 bg-slate-900 px-1.5 py-0.5 rounded">index.html</code> (hoặc trong từng bài) chọn <b>"Open with Live Server"</b>.</li>
+        <li>Hoặc chạy dòng lệnh: <code class="text-indigo-300 bg-slate-900 px-1.5 py-0.5 rounded">npx http-server week05</code> hoặc <code class="text-indigo-300 bg-slate-900 px-1.5 py-0.5 rounded">python -m http.server 8000</code>.</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="mt-12 text-center text-xs text-slate-500">
+    HCMUS • Web Development Course • ReactJS + TailwindCSS
+  </footer>
+</body>
+</html>

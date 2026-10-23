@@ -37,6 +37,18 @@ web-development-course/
 │   └── Question3/             # Question 3: Interactive project
 │       └── index.html
 │
+├── week05/                    # Week 5: ReactJS & TailwindCSS
+│   ├── index.html             # Navigation portal for Week 5
+│   ├── Exercise1/             # Exercise 1: 12 Zodiac Animals (ReactJS + TailwindCSS)
+│   │   └── index.html
+│   ├── Exercise2/             # Exercise 2: Interactive Chinese Chess (ReactJS + TailwindCSS)
+│   │   ├── index.html
+│   │   └── CoTuong_imgs/      # Chess piece images & board
+│   └── Exercise3/             # Exercise 3: Product Catalog & Details (ReactJS + TailwindCSS)
+│       ├── index.html
+│       ├── data.js            # Product dataset
+│       └── imgs/              # Product images
+│
 ├── LICENSE                    # MIT License
 └── README.md                  # This file
 ```
@@ -48,6 +60,7 @@ web-development-course/
 | **Week 01** | HTML Fundamentals | Semantic HTML, forms, tables, multimedia, project structure |
 | **Week 02** | CSS Frameworks | Bootstrap 5, Tailwind CSS, Vanilla CSS, responsive design |
 | **Week 03** | JavaScript & Interactivity | DOM manipulation, event handling, game logic, interactive UI |
+| **Week 05** | ReactJS & TailwindCSS | React 18, TailwindCSS, state management, move validation, product catalog, fallback mechanisms |
 
 ## 🚀 Getting Started
 
@@ -94,6 +107,12 @@ An interactive Cờ Tướng (Chinese Chess) implementation with:
 - Valid move highlighting
 - Game state management
 - Traditional piece graphics
+
+### Week 5 - ReactJS & TailwindCSS Applications: `week05/`
+Interactive modern web applications built using standalone React 18 and TailwindCSS:
+- **Exercise 1 (`week05/Exercise1/`):** 12 Zodiac animals layout matching Week 1 gradients with automatic emoji/image fallback mechanism.
+- **Exercise 2 (`week05/Exercise2/`):** Interactive Chinese Chess (Cờ Tướng) game with strict move validation (blocking horse leg, elephant river boundary/eye, palace bounds for advisor/general, flying generals rule, cannon mounts), drag-and-drop & click-to-move, and piece/board fallbacks.
+- **Exercise 3 (`week05/Exercise3/`):** E-Commerce product catalog with category sidebar filtering (`men's clothing`, `jewelery`, `electronics`, `women's clothing`), detailed product view, and category placeholder image fallback.
 
 ## 📝 License
 

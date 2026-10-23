@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>12 con giáp</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- React 18 & ReactDOM -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <!-- Babel Standalone -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    /* Gradient chuẩn 12 ô khớp 100% week01 */
+    .c1  { background: linear-gradient(135deg, #8fbf6a, #5a8f4a); }
+    .c2  { background: linear-gradient(135deg, #b5453a, #6e2a2a); }
+    .c3  { background: linear-gradient(135deg, #6fa8dc, #3d6fa3); }
+    .c4  { background: linear-gradient(135deg, #f0b96a, #d98a3a); }
+    .c5  { background: linear-gradient(135deg, #d9a8e0, #a86fc2); }
+    .c6  { background: linear-gradient(135deg, #a9e0c8, #4fae8f); }
+    .c7  { background: linear-gradient(135deg, #8fbf6a, #5a8f4a); }
+    .c8  { background: linear-gradient(135deg, #c2506a, #7a2a3a); }
+    .c9  { background: linear-gradient(135deg, #6fa8dc, #3d6fa3); }
+    .c10 { background: linear-gradient(135deg, #f0c96a, #d9973a); }
+    .c11 { background: linear-gradient(135deg, #c9a8e0, #9a6fc2); }
+    .c12 { background: linear-gradient(135deg, #f0c96a, #e0a05a); }
+  </style>
+</head>
+<body class="bg-white min-h-screen flex items-center justify-center p-5 font-sans">
+
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+    const ZODIAC_LIST = [
+      { id: 1,  name: "Chuột", emoji: "🐭", file: "imgs/chuot.png", bgClass: "c1" },
+      { id: 2,  name: "Trâu",  emoji: "🐂", file: "imgs/trau.png",  bgClass: "c2" },
+      { id: 3,  name: "Hổ",    emoji: "🐯", file: "imgs/ho.png",    bgClass: "c3" },
+      { id: 4,  name: "Mèo",   emoji: "🐱", file: "imgs/meo.png",   bgClass: "c4" },
+      { id: 5,  name: "Rồng",  emoji: "🐲", file: "imgs/rong.png",  bgClass: "c5" },
+      { id: 6,  name: "Rắn",   emoji: "🐍", file: "imgs/ran.png",   bgClass: "c6" },
+      { id: 7,  name: "Ngựa",  emoji: "🐴", file: "imgs/ngua.png",  bgClass: "c7" },
+      { id: 8,  name: "Dê",    emoji: "🐐", file: "imgs/de.png",    bgClass: "c8" },
+      { id: 9,  name: "Khỉ",   emoji: "🐵", file: "imgs/khi.png",   bgClass: "c9" },
+      { id: 10, name: "Gà",    emoji: "🐔", file: "imgs/ga.png",    bgClass: "c10" },
+      { id: 11, name: "Chó",   emoji: "🐶", file: "imgs/cho.png",   bgClass: "c11" },
+      { id: 12, name: "Lợn",   emoji: "🐷", file: "imgs/lon.png",   bgClass: "c12" }
+    ];
+
+    // Component ô con giáp có cơ chế fallback khi không có hình ảnh
+    function ZodiacCell({ item }) {
+      const [imgFailed, setImgFailed] = useState(false);
+
+      return (
+        <div 
+          className={`w-[90px] h-[90px] flex items-center justify-center border border-[#ddd] rounded-lg shadow-sm ${item.bgClass} transition-transform hover:scale-105 select-none`}
+        >
+          {!imgFailed ? (
+            <img
+              src={item.file}
+              alt={item.name}
+              onError={() => setImgFailed(true)}
+              className="w-16 h-16 object-contain"
+            />
+          ) : (
+            <span className="text-5xl leading-none drop-shadow-sm cursor-default">
+              {item.emoji}
+            </span>
+          )}
+        </div>
+      );
+    }
+
+    function App() {
+      return (
+        <div className="border border-[#ccc] rounded-lg p-2.5 bg-white shadow-md">
+          <div className="grid grid-cols-4 gap-2">
+            {ZODIAC_LIST.map((animal) => (
+              <ZodiacCell key={animal.id} item={animal} />
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>

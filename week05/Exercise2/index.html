@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bàn Cờ Tướng</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- React 18 & ReactDOM -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <!-- Babel Standalone -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    /* Filter tạo màu đen cho quân cờ do thư mục chỉ có hình quân đỏ */
+    .black-piece {
+      filter: grayscale(100%) contrast(1.5) brightness(0.6);
+    }
+  </style>
+</head>
+<body class="bg-[#2c3e50] min-h-screen flex items-center justify-center m-0 font-sans select-none">
+
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+    const ROWS = 10;
+    const COLS = 9;
+
+    const PIECE_TYPES = {
+      XE: { key: 'D_Xe', redChar: '俥', blackChar: '車' },
+      MA: { key: 'D_Ma', redChar: '傌', blackChar: '馬' },
+      TUONG: { key: 'D_Tuong', redChar: '相', blackChar: '象' },
+      SI: { key: 'D_Si', redChar: '仕', blackChar: '士' },
+      VUA: { key: 'D_Vua', redChar: '帥', blackChar: '將' },
+      PHAO: { key: 'D_Phao', redChar: '炮', blackChar: '砲' },
+      TOT: { key: 'D_Tot', redChar: '兵', blackChar: '卒' }
+    };
+
+    // Sơ đồ khởi tạo bàn cờ ban đầu chuẩn week03
+    const getInitialBoard = () => {
+      const board = Array(ROWS).fill(null).map(() => Array(COLS).fill(null));
+
+      // Hàng 0: Quân đen
+      const blackBack = ['XE', 'MA', 'TUONG', 'SI', 'VUA', 'SI', 'TUONG', 'MA', 'XE'];
+      blackBack.forEach((type, col) => {
+        board[0][col] = { type, side: 'black' };
+      });
+      board[2][1] = { type: 'PHAO', side: 'black' };
+      board[2][7] = { type: 'PHAO', side: 'black' };
+      [0, 2, 4, 6, 8].forEach((col) => {
+        board[3][col] = { type: 'TOT', side: 'black' };
+      });
+
+      // Hàng 9: Quân đỏ
+      const redBack = ['XE', 'MA', 'TUONG', 'SI', 'VUA', 'SI', 'TUONG', 'MA', 'XE'];
+      redBack.forEach((type, col) => {
+        board[9][col] = { type, side: 'red' };
+      });
+      board[7][1] = { type: 'PHAO', side: 'red' };
+      board[7][7] = { type: 'PHAO', side: 'red' };
+      [0, 2, 4, 6, 8].forEach((col) => {
+        board[6][col] = { type: 'TOT', side: 'red' };
+      });
+
+      return board;
+    };
+
+    // Hàm kiểm tra nước đi đúng luật cho các quân cờ
+    function getValidMoves(board, r, c) {
+      const piece = board[r][c];
+      if (!piece) return [];
+      const moves = [];
+      const side = piece.side;
+
+      const canLandOn = (tr, tc) => {
+        if (tr < 0 || tr >= ROWS || tc < 0 || tc >= COLS) return false;
+        const target = board[tr][tc];
+        return !target || target.side !== side;
+      };
+
+      switch (piece.type) {
+        case 'XE': {
+          const dirs = [[0, 1], [0, -1], [1, 0], [-1, 0]];
+          for (const [dr, dc] of dirs) {
+            let tr = r + dr;
+            let tc = c + dc;
+            while (tr >= 0 && tr < ROWS && tc >= 0 && tc < COLS) {
+              if (!board[tr][tc]) {
+                moves.push([tr, tc]);
+              } else {
+                if (board[tr][tc].side !== side) moves.push([tr, tc]);
+                break;
+              }
+              tr += dr;
+              tc += dc;
+            }
+          }
+          break;
+        }
+
+        case 'PHAO': {
+          const dirs = [[0, 1], [0, -1], [1, 0], [-1, 0]];
+          for (const [dr, dc] of dirs) {
+            let tr = r + dr;
+            let tc = c + dc;
+            let metScreen = false;
+            while (tr >= 0 && tr < ROWS && tc >= 0 && tc < COLS) {
+              if (!board[tr][tc]) {
+                if (!metScreen) moves.push([tr, tc]);
+              } else {
+                if (!metScreen) {
+                  metScreen = true;
+                } else {
+                  if (board[tr][tc].side !== side) moves.push([tr, tc]);
+                  break;
+                }
+              }
+              tr += dr;
+              tc += dc;
+            }
+          }
+          break;
+        }
+
+        case 'MA': {
+          const horseMoves = [
+            { dr: -2, dc: -1, block: [-1, 0] },
+            { dr: -2, dc: 1,  block: [-1, 0] },
+            { dr: 2,  dc: -1, block: [1, 0] },
+            { dr: 2,  dc: 1,  block: [1, 0] },
+            { dr: -1, dc: -2, block: [0, -1] },
+            { dr: 1,  dc: -2, block: [0, -1] },
+            { dr: -1, dc: 2,  block: [0, 1] },
+            { dr: 1,  dc: 2,  block: [0, 1] }
+          ];
+          for (const m of horseMoves) {
+            const tr = r + m.dr;
+            const tc = c + m.dc;
+            const br = r + m.block[0];
+            const bc = c + m.block[1];
+            if (canLandOn(tr, tc) && !board[br][bc]) {
+              moves.push([tr, tc]);
+            }
+          }
+          break;
+        }
+
+        case 'TUONG': {
+          const elephantMoves = [
+            { dr: -2, dc: -2, eye: [-1, -1] },
+            { dr: -2, dc: 2,  eye: [-1, 1] },
+            { dr: 2,  dc: -2, eye: [1, -1] },
+            { dr: 2,  dc: 2,  eye: [1, 1] }
+          ];
+          for (const m of elephantMoves) {
+            const tr = r + m.dr;
+            const tc = c + m.dc;
+            const er = r + m.eye[0];
+            const ec = c + m.eye[1];
+            const staysOnSide = side === 'black' ? tr <= 4 : tr >= 5;
+            if (staysOnSide && canLandOn(tr, tc) && !board[er][ec]) {
+              moves.push([tr, tc]);
+            }
+          }
+          break;
+        }
+
+        case 'SI': {
+          const advisorMoves = [[-1, -1], [-1, 1], [1, -1], [1, 1]];
+          for (const [dr, dc] of advisorMoves) {
+            const tr = r + dr;
+            const tc = c + dc;
+            const inPalace = (tc >= 3 && tc <= 5) && 
+              (side === 'black' ? (tr >= 0 && tr <= 2) : (tr >= 7 && tr <= 9));
+            if (inPalace && canLandOn(tr, tc)) {
+              moves.push([tr, tc]);
+            }
+          }
+          break;
+        }
+
+        case 'VUA': {
+          const kingMoves = [[0, 1], [0, -1], [1, 0], [-1, 0]];
+          for (const [dr, dc] of kingMoves) {
+            const tr = r + dr;
+            const tc = c + dc;
+            const inPalace = (tc >= 3 && tc <= 5) && 
+              (side === 'black' ? (tr >= 0 && tr <= 2) : (tr >= 7 && tr <= 9));
+            if (inPalace && canLandOn(tr, tc)) {
+              moves.push([tr, tc]);
+            }
+          }
+          break;
+        }
+
+        case 'TOT': {
+          const forward = side === 'black' ? 1 : -1;
+          const hasCrossedRiver = side === 'black' ? r >= 5 : r <= 4;
+          const trForward = r + forward;
+          if (canLandOn(trForward, c)) {
+            moves.push([trForward, c]);
+          }
+          if (hasCrossedRiver) {
+            if (canLandOn(r, c - 1)) moves.push([r, c - 1]);
+            if (canLandOn(r, c + 1)) moves.push([r, c + 1]);
+          }
+          break;
+        }
+      }
+
+      return moves;
+    }
+
+    // Component Quân cờ kèm fallback
+    function Piece({ piece }) {
+      const [imgFailed, setImgFailed] = useState(false);
+      const isBlack = piece.side === 'black';
+      const pieceInfo = PIECE_TYPES[piece.type];
+
+      if (imgFailed) {
+        return (
+          <div className={`w-[37px] h-[37px] rounded-full flex items-center justify-center font-bold text-base shadow border ${
+            isBlack ? 'bg-slate-800 text-amber-200 border-slate-900' : 'bg-amber-100 text-red-600 border-red-600'
+          }`}>
+            {isBlack ? pieceInfo.blackChar : pieceInfo.redChar}
+          </div>
+        );
+      }
+
+      return (
+        <img
+          src={`CoTuong_imgs/${pieceInfo.key}.gif`}
+          alt={piece.type}
+          onError={() => setImgFailed(true)}
+          draggable={false}
+          className={`w-[37px] h-[37px] cursor-grab active:cursor-grabbing z-10 transition-transform ${
+            isBlack ? 'black-piece' : ''
+          }`}
+        />
+      );
+    }
+
+    // Fallback bàn cờ SVG nếu BanCo.jpg không tải được
+    function BoardFallback() {
+      return (
+        <svg viewBox="0 0 511 510" className="absolute inset-0 w-full h-full pointer-events-none bg-[#eedaa2]">
+          <rect x="23" y="24" width="466" height="460" fill="none" stroke="#333" strokeWidth="2"/>
+          {[...Array(10)].map((_, r) => (
+            <line key={`h${r}`} x1="23" y1={24 + r * 51.1} x2="489" y2={24 + r * 51.1} stroke="#333" strokeWidth="1"/>
+          ))}
+          {[0, 8].map((c) => (
+            <line key={`v${c}`} x1={23 + c * 58.2} y1="24" x2={23 + c * 58.2} y2="484" stroke="#333" strokeWidth="1"/>
+          ))}
+          {[1, 2, 3, 4, 5, 6, 7].map((c) => (
+            <React.Fragment key={`vc${c}`}>
+              <line x1={23 + c * 58.2} y1="24" x2={23 + c * 58.2} y2={24 + 4 * 51.1} stroke="#333" strokeWidth="1"/>
+              <line x1={23 + c * 58.2} y1={24 + 5 * 51.1} x2={23 + c * 58.2} y2="484" stroke="#333" strokeWidth="1"/>
+            </React.Fragment>
+          ))}
+        </svg>
+      );
+    }
+
+    function App() {
+      const [board, setBoard] = useState(getInitialBoard());
+      const [selectedPos, setSelectedPos] = useState(null); // [r, c]
+      const [validMoves, setValidMoves] = useState([]); // [[r, c], ...]
+      const [boardImgFailed, setBoardImgFailed] = useState(false);
+
+      const isValidMove = (r, c) => {
+        return validMoves.some(([vr, vc]) => vr === r && vc === c);
+      };
+
+      const executeMove = (fromR, fromC, toR, toC) => {
+        const newBoard = board.map(row => [...row]);
+        newBoard[toR][toC] = newBoard[fromR][fromC];
+        newBoard[fromR][fromC] = null;
+        setBoard(newBoard);
+        setSelectedPos(null);
+        setValidMoves([]);
+      };
+
+      const handleCellClick = (r, c) => {
+        const piece = board[r][c];
+
+        if (selectedPos) {
+          const [sr, sc] = selectedPos;
+          if (sr === r && sc === c) {
+            setSelectedPos(null);
+            setValidMoves([]);
+            return;
+          }
+          if (isValidMove(r, c)) {
+            executeMove(sr, sc, r, c);
+            return;
+          }
+        }
+
+        if (piece) {
+          setSelectedPos([r, c]);
+          setValidMoves(getValidMoves(board, r, c));
+        } else {
+          setSelectedPos(null);
+          setValidMoves([]);
+        }
+      };
+
+      const handleDragStart = (e, r, c) => {
+        setSelectedPos([r, c]);
+        setValidMoves(getValidMoves(board, r, c));
+        e.dataTransfer.setData('text/plain', JSON.stringify({ r, c }));
+      };
+
+      const handleDrop = (e, toR, toC) => {
+        e.preventDefault();
+        try {
+          const { r: fromR, c: fromC } = JSON.parse(e.dataTransfer.getData('text/plain'));
+          const moves = getValidMoves(board, fromR, fromC);
+          const canMove = moves.some(([vr, vc]) => vr === toR && vc === toC);
+          if (canMove) {
+            executeMove(fromR, fromC, toR, toC);
+          }
+        } catch (err) {}
+      };
+
+      return (
+        <div className="flex flex-col items-center gap-5">
+          <div className="text-white text-2xl uppercase tracking-[2px] font-bold">
+            Bàn Cờ Tướng Drag & Drop
+          </div>
+
+          <div 
+            className="relative w-[511px] h-[510px] bg-no-repeat bg-cover shadow-[0_10px_30px_rgba(0,0,0,0.5)] border-2 border-[#34495e] rounded"
+            style={{ backgroundImage: !boardImgFailed ? "url('CoTuong_imgs/BanCo.jpg')" : 'none' }}
+          >
+            {/* Fallback bàn cờ nếu ảnh nền BanCo.jpg lỗi */}
+            {boardImgFailed && <BoardFallback />}
+
+            {/* Ảnh nền ẩn để phát hiện onError nếu BanCo.jpg lỗi */}
+            {!boardImgFailed && (
+              <img 
+                src="CoTuong_imgs/BanCo.jpg" 
+                alt="" 
+                className="hidden" 
+                onError={() => setBoardImgFailed(true)} 
+              />
+            )}
+
+            {/* Grid 9x10 ô giao điểm */}
+            <div 
+              className="absolute top-[24px] left-[23px] right-[22px] bottom-[26px] grid grid-cols-9 grid-rows-10"
+            >
+              {board.map((row, r) =>
+                row.map((piece, c) => {
+                  const isSelected = selectedPos && selectedPos[0] === r && selectedPos[1] === c;
+                  const isTarget = isValidMove(r, c);
+
+                  return (
+                    <div
+                      key={`${r}-${c}`}
+                      onClick={() => handleCellClick(r, c)}
+                      onDragOver={(e) => e.preventDefault()}
+                      onDrop={(e) => handleDrop(e, r, c)}
+                      className="w-full h-full flex items-center justify-center relative cursor-pointer"
+                    >
+                      {/* Hiệu ứng ô nước đi hợp lệ khớp week03 */}
+                      {isTarget && (
+                        <div className="absolute w-5 h-5 bg-[#2ecc71]/40 rounded-full z-20 pointer-events-none animate-pulse" />
+                      )}
+
+                      {/* Highlight ô đang chọn */}
+                      {isSelected && (
+                        <div className="absolute inset-1 rounded-full border-2 border-amber-400 bg-amber-400/20 z-10 pointer-events-none" />
+                      )}
+
+                      {piece && (
+                        <div
+                          draggable={true}
+                          onDragStart={(e) => handleDragStart(e, r, c)}
+                          className="z-10"
+                        >
+                          <Piece piece={piece} />
+                        </div>
+                      )}
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
